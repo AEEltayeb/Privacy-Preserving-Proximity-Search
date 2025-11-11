@@ -1,77 +1,82 @@
-Privacy preserving Proximity Search
+# Privacy Preserving Proximity Search
 
-This project is a Django web application demonstrating a privacy preserving approach to location services by implementing Proximity Search using Homomorphic Encryption.
+This project is a **Django web application** demonstrating a privacy-preserving approach to location services by implementing **Proximity Search** using **Homomorphic Encryption**.
 
-The core goal is to find the 10 nearest points of interest to a user's location without the server ever learning the user's exact, sensitive coordinates during the distance calculation.
+The core goal is to find the **10 nearest points of interest** to a user's location **without the server ever learning the user's exact coordinates** during the distance calculation.
 
--Core Technology: Paillier Homomorphic Encryption
+---
 
-The privacy guarantee relies on the Paillier Homomorphic Encryption scheme (implemented via the phe Python library).
+## Core Technology
 
-Homomorphic encryption allows the server to perform mathematical operations (specifically, addition subtraction, and multiplication) directly on encrypted data. This enables the server to calculate the difference between the stored location coordinates and the user's encrypted coordinates without ever decrypting the user's input.
+- **Paillier Homomorphic Encryption**
+- Implemented via the [phe](https://github.com/n1analytics/python-paillier) Python library.
 
-project Function Summary
+Homomorphic encryption allows the server to perform operations (addition, subtraction, multiplication) **directly on encrypted data**, enabling distance calculations **without decrypting the user's input**.
 
-The application is structured around a single Django app, encDst (Encrypted Destination/Distance), which performs the following sequence of operations:
+---
 
-Initialization: Upon the first visit, the database is populated with 100 random location points for various activities (e.g., 'Cafe', 'Park', 'Shawarma restaurant').
+## Project Function Summary
 
-Input: The user enters their x and y coordinates into the web form (rendered by index.html).
+The application is structured around a single Django app: `encDst` (Encrypted Destination/Distance). The sequence of operations is:
 
-Key Generation: A new Paillier Public/Private Key pair is generated for the session.
+1. **Initialization:**  
+   On the first visit, the database is populated with **100 random location points** (e.g., Cafe, Park, Shawarma restaurant).
 
-Encryption: The user's input coordinates (x,y) are immediately encrypted using the Public Key.
+2. **Input:**  
+   The user enters their **x and y coordinates** into the web form (`index.html`).
 
-Encrypted Calculation (Privacy Step):
+3. **Key Generation:**  
+   A new Paillier **Public/Private Key pair** is generated for the session.
 
-For every stored location $\mathbf{L}$, the server performs the calculation on the ciphertext:
+4. **Encryption:**  
+   User coordinates (x, y) are immediately encrypted using the Public Key.
+
+5. **Encrypted Calculation (Privacy Step):**  
+Enc(x_loc) - Enc(x_user) = Enc(diff_x)
+
+This allows the coordinate difference to be computed **without revealing the user's location**.
+
+6. **Decryption & Distance:**  
+The server decrypts the differences (`diff_x`, `diff_y`) and calculates the **Euclidean distance**:
+
+sqrt(diff_x^2 + diff_y^2)
 
 
-$$\text{Enc}(\mathbf{x}_{\text{loc}}) - \text{Enc}(\mathbf{x}_{\text{user}}) = \text{Enc}(\mathbf{diff}_{\mathbf{x}})$$
+7. **Output:**  
+The results are sorted, and the **top 10 nearest activities** are displayed to the user.
 
-This is the critical step where the coordinate difference is found without revealing $\mathbf{x}_{\text{user}}$.
+---
 
-Decryption & Distance: The server decrypts the differences ($\mathbf{diff}_{\mathbf{x}}, \mathbf{diff}_{\mathbf{y}}$) using the Private Key, then calculates the standard Euclidean distance ($\sqrt{\mathbf{diff}_{\mathbf{x}}^2 + \mathbf{diff}_{\mathbf{y}}^2}$).
+## Installation and Usage
 
-Output: The results are sorted, and the top 10 nearest activities are displayed to the user.
+### Prerequisites
 
+- Python 3.11 or later  
+- pip
 
-Installation and Usage
+### Setup
 
-1. Prerequisites
+1. **Extract the Archive:**  
+Unzip the project files.
 
-Python (3.11 or later is implied by cache files)
-
-pip
-
-2. Setup
-
-Extract the Archive: Unzip the project files.
-
-Navigate: Change directory into the folder containing manage.py.
-
+2. **Navigate to the Project Folder:**  
 cd /path/to/coe426
+3. Install Dependencies:
+   pip install django phe
+4. Run Migrations::
+   python manage.py migrate
 
+##Running the Application
 
-Install Dependencies: You must install Django and the Paillier Homomorphic Encryption library.
-
-pip install django phe
-
-
-Run Migrations: Initialize the database and create the Location table.
-
-python manage.py migrate
-
-
-3. Running the Application
-
-Start the Server:
-
+1. Start the Server:
 python manage.py runserver
+2. Access the App:
+Open your browser and navigate to:
+http://127.0.0.1:8000/encDst/main/
+The main view will automatically populate the database with 100 locations if it is empty.
 
+Notes
 
-Access the App: Open your web browser and navigate to the main input page:
+The application demonstrates privacy-preserving proximity search suitable for sensitive location-based services.
 
-$$\text{http://127.0.0.1:8000/encDst/main/}$$
-
-(The main view will automatically populate the database with 100 locations if it's empty).
+All calculations on user coordinates are performed encrypted, ensuring user privacy.
