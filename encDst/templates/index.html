@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      background-color: #1a1a1a; 
+      color: #f0f0f0; 
+      font-family: 'Arial', sans-serif; 
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    form {
+      background-color: #333; 
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+      text-align: center;
+    }
+
+    input[type="float"], button {
+      margin: 10px;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+      font-size: 16px;
+      background-color: #555;
+      color: #fff;
+    }
+
+    button {
+      background-color: #4CAF50; 
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <form action="{% url 'dst' %}" method="get">
+    <input type="float" name="x" placeholder="x">
+    <input type="float" name="y" placeholder="y">
+    <button type="submit">Get Nearest Locations</button>
+  </form>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    /* CSS style to center the form */
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    form {
+      text-align: center;
+    }
+
+    input[type="float"], button {
+      margin: 5px;
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <form action="{% url 'dst' %}" method="get">
+    <input type="float" name="x" placeholder="x">
+    <input type="float" name="y" placeholder="y">
+    <button type="submit">Get Nearest Locations</button>
+  </form>
+</body>
+</html>

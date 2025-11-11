@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      background-color: #1a1a1a;
+      color: #f0f0f0;
+      font-family: 'Arial', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    
+    table {
+      width: 80%;
+      border-collapse: collapse;
+      background-color: #333;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    th, td {
+      padding: 12px;
+      border: 1px solid #444;
+    }
+
+    th {
+      background-color: #555;
+    }
+
+    tr:nth-child(even) { /* different colors for alternating rows */
+      background-color: #2a2a2a; 
+    }
+  </style>
+</head>
+<body>
+  <table>
+    <thead>
+      <tr>
+        <th>Activity</th>
+        <th>Distance</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for activity, distance in top_activities %}
+        <tr>
+          <td>{{ activity }}</td>
+          <td>{{ distance }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</body>
+</html>
